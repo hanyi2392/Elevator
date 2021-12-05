@@ -94,7 +94,6 @@ class elevator:
                     self.move = UP
                     self.next_dst = dst_floor
 
-# 딕셔너리 사용해보기
     def go(self):
         global btn_list
         if self.move == UP:
@@ -166,4 +165,4 @@ while(True):
     print("")
     print(e.floor_state, "층")
     print("")
-    see()
+    # see()
