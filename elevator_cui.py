@@ -165,4 +165,4 @@ while(True):
     print("")
     print(e.floor_state, "층")
     print("")
-    # see()
+    see()
