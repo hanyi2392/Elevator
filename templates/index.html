@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HOME NETWORK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- css 파일 지정-->
+</head>
+<body>
+    <div class="container">
+        <!--<div class="header">
+            <h2>HOME IoT</h2>
+        </div>-->
+        <div class="main">
+            <div id="current_position"></div>
+            <div id="inner_button">
+                <!--<button id="btn_led" onclick="led_on()">LED ON</button>-->                      <!-- Javascript 함수 지정 -->
+                <button id="btn50" onclick="btn_interrupt(5,0)">5</button>
+                <button id="btn40" onclick="btn_interrupt(4,0)">4</button>
+                <button id="btn30" onclick="btn_interrupt(3,0)">3</button>
+                <button id="btn20" onclick="btn_interrupt(2,0)">2</button>
+                <button id="btn10" onclick="btn_interrupt(1,0)">1</button>
+            </div>
+            <div id="outer_button">
+                <div>
+                    <div><h6>5층</h6></div>
+                    <div>
+                        <button id="btn52" onclick="btn_interrupt(5,2)">▽</button>
+                    </div>
+                </div>
+                <div>
+                    <div><h6>4층</h6></div>
+                    <div>
+                        <button id="btn41" onclick="btn_interrupt(4,1)">△</button>
+                        <button id="btn42" onclick="btn_interrupt(4,2)">▽</button>
+                    </div>
+                </div>
+                <div>
+                    <div><h6>3층</h6></div>
+                    <div>
+                        <button id="btn31" onclick="btn_interrupt(3,1)">△</button>
+                        <button id="btn32" onclick="btn_interrupt(3,2)">▽</button>
+                    </div>
+                </div>
+                <div>
+                    <div><h6>2층</h6></div>
+                    <div>
+                        <button id="btn21" onclick="btn_interrupt(2,1)">△</button>
+                        <button id="btn22" onclick="btn_interrupt(2,2)">▽</button>
+                    </div>
+                </div>
+                <div>
+                    <div><h6>1층</h6></div>
+                    <div>
+                        <button id="btn11" onclick="btn_interrupt(1,1)">△</button>
+                    </div>
+                </div>
+            </div>
+            <div id="result">
+    
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        function btn_interrupt(floor, move){
+                fetch("/led/on?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
+                .then(response=> response.text())
+                .then(data=> {
+                    console.log(data);
+                    let result = document.querySelector("#result");  
+                    const btnElv = document.getElementById('btn' + floor + move); 
+                    result.innerHTML = "<h1>반환 : " + data+"</h1>";  
+                    if(data=="True"){ 
+                        if(move==1) {                              
+                            btnElv.innerText = "▲";
+                        }else if(move==2){
+                            btnElv.innerText = "▼";
+                        }
+                    }else{
+                        if(move==1) {                              
+                            btnElv.innerText = "△";
+                        }else if(move==2){
+                            btnElv.innerText = "▽";
+                        }
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
