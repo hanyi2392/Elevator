@@ -3,16 +3,19 @@
 
 from flask import Flask, request
 from flask import render_template
-import RPi.GPIO as GPIO
 import time
 import threading
 import PWM_Servo
+#from flask import Response, make_response
+import requests
+import json
 
 app = Flask(__name__)
 
 STOP = 0
 UP = 1
 DOWN = 2
+term = 2
 
 story = 5           # 전체 층수
 btnum = story*3-2   # 전체 버튼수
@@ -96,26 +99,36 @@ class elevator:
                     self.move = UP
                     self.next_dst = dst_floor
 
-    def go(self):
+    def move_floor(self):
         global btn_list
         if self.move == UP:
             self.floor_state = self.floor_state + 1
         elif self.move == DOWN:
             self.floor_state = self.floor_state - 1
-        print(self.floor_state, self.next_dst)
+        
+        #floor_state_res = Response("Floor State", 200, {'floor', self.floor_state})
+        #floor_move_res = Response("Move State", 200, {'move', self.move})
         if(self.floor_state == self.next_dst):
             print("")
             print(self.floor_state, "층입니다. 문이 열립니다.")
             print("")
+            PWM_Servo.make_sound()
             PWM_Servo.open_door()
             PWM_Servo.close_door()
         for bl in btn_list:
             if (bl.floor == self.floor_state) and ((bl.move == self.move) or (bl.move == STOP)):
                 bl.pushed = False
             self.set_next_dst()
+        
+        # print("----------------------------------")
+        # print("현재위치 : ", e.floor_state)
+        # print("----------------------------------")
+        #return render_template('index.html', floor_state_res = floor_state_res)
 
 
 e = elevator(1, STOP, 0)
+
+
 
 def system_reset():
     global btn_list, e
@@ -140,7 +153,7 @@ mp = False
 def home():
     return render_template('index.html')
 
-@app.route("/led/on")                       # index.html에서 이 주소를 접속하여 해당 함수를 실행
+@app.route("/btn")                       # index.html에서 이 주소를 접속하여 해당 함수를 실행
 def btn_interrupt():
     floor = request.args.get('floor', default = 1, type=int)
     move = request.args.get('move', default=0, type=int)
@@ -149,21 +162,52 @@ def btn_interrupt():
         print("문이 열립니다.")
         PWM_Servo.open_door()
         PWM_Servo.close_door()
-        pushed = False
+        pushed = "False"
     else:
         for bl in btn_list:
             if (bl.floor == floor) and (bl.move == move):
-                print("----------------------------")
-                print(bl.floor, bl.move, "번 버튼 누름")
-                print("----------------------------")
+                # print("----------------------------")
+                # print(bl.floor, bl.move, "번 버튼 누름")
+                # print("----------------------------")
                 bl.pushed = not bl.pushed
-                pushed = bl.pushed
+                if(bl.pushed) : pushed="True"
+                else : pushed="False"
                 break
         e.set_next_dst()
-    print("----------------------------")
-    print("pushed : ", pushed)
-    print("----------------------------")
+    # print("----------------------------")
+    # print("pushed : ", pushed)
+    # print("----------------------------")
     return pushed
 
+# @app.route("/floorstatus")                       # index.html에서 이 주소를 접속하여 해당 함수를 실행
+# def check_floor():
+#     # print("----------------------------")
+#     # print("check floor : ", e.floor_state)
+#     # print("----------------------------")
+#     return str(e.floor_state)
+
+
+# @app.route("/movestatus")                       # index.html에서 이 주소를 접속하여 해당 함수를 실행
+# def check_move():
+#     # print("----------------------------")
+#     # print("check move : ", e.move)
+#     # print("----------------------------")
+#     return str(e.move)
+
+@app.route("/send_status")
+def send_status():
+    return str(e.floor_state)+str(e.move)
+
+def go():
+    while(True) :
+        # print("--------------------")
+        # print("go함수 : 일정 간격마다 한 번씩 층 옮김.")
+        # print("--------------------")
+        time.sleep(term)
+        e.move_floor()
+
+t1 = threading.Thread(target=go)     # Thread t1 생성
+t1.start()
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

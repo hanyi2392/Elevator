@@ -11,7 +11,13 @@
             <h2>HOME IoT</h2>
         </div>-->
         <div class="main">
-            <div id="current_position"></div>
+            <div id="current_position">
+                <h7>현재위치</h7>
+                <div id="blackboard">
+                    <div id="bb_dir"></div>
+                    <div id="bb_floor"></div>
+                </div>
+            </div>
             <div id="inner_button">
                 <!--<button id="btn_led" onclick="led_on()">LED ON</button>-->                      <!-- Javascript 함수 지정 -->
                 <button id="btn50" onclick="btn_interrupt(5,0)">5</button>
@@ -61,9 +67,10 @@
         </div>
     </div>
     <script>
-        
+
+        var c_floor, c_move
         function btn_interrupt(floor, move){
-                fetch("/led/on?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
+                fetch("/btn?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
                 .then(response=> response.text())
                 .then(data=> {
                     console.log(data);
@@ -84,6 +91,60 @@
                         }
                     }
                 });
+        }
+/*
+        function printFloorStatus() {
+            fetch("/floorstatus")
+            .then(response => response.text())
+            .then(data=> {
+                console.log(data);
+                let bbfres =document.quarySelector("#bb_floor");
+                bbfres.innerHTML = "<h1>"+data+"</h1>";
+            });
+        }
+
+        function printMoveStatus() {
+            fetch("/movestatus")
+            .then(response => response.text())
+            .then(data=> {
+                console.log(data);
+                let bbdres = document.querySelector("#bb_dir");  
+                if (data=="1") {
+                    bbdres.innerHTML = "<h1>△</h1>";
+                } else if(data=="2") {
+                    bbdres.innerHTML = "<h1>▽</h1>";
+                } else {
+                    bbdres.innerHTML = "<h1></h1>";
+                }
+            });
+        }
+*/
+        function printStatus() {
+            fetch("/send_status")
+            .then(response => response.text())
+            .then(data=> {
+                console.log(data);
+                c_floor=data[0];
+                c_move=data[1];
+                //let bbdres = document.querySelector("#bb_dir");  
+                //let bbfres = document.quarySelector("#bb_floor");
+                const bbdres = document.getElementById('bb_dir');
+                const bbfres = document.getElementById('bb_floor');
+                bbdres.innerHTML = "현재 층수 : " + c_floor + ", 현재 방향 ; "+ c_move;
+
+                if (c_move=="1") {
+                    bbdres.innerHTML = "<h1>△</h1>";
+                } else if(c_move=="2") {
+                    bbdres.innerHTML = "<h1>▽</h1>";
+                } else {
+                    bbdres.innerHTML = "<h1></h1>";
+                }
+                bbfres.innerHTML = "<h1>"+c_floor+"</h1>";
+            })
+        }
+        // 1초마다 한 번씩 서버로부터 현재 층과 방향 데이터 요청
+        window.onload = function() {
+            setInterval(function () {printStatus();}, 1000);
         }
     </script>
 </body>
