@@ -2,8 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>HOME NETWORK</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- css 파일 지정-->
+    <title>ELEVATOR</title>
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">--> <!-- css 파일 지정-->
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
 </head>
 <body>
     <div class="container">
@@ -67,7 +68,6 @@
         </div>
     </div>
     <script>
-
         var c_floor, c_move
         function btn_interrupt(floor, move){
                 fetch("/btn?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
@@ -147,5 +147,10 @@
             setInterval(function () {printStatus();}, 1000);
         }
     </script>
+    <!-- Bootstrap core JavaScript
+    ===========================-->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jqery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>
