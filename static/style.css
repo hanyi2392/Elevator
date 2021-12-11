@@ -1,5 +1,9 @@
 body {
-    background-color: antiquewhite;
+    background-color: darkslategray;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:0;
 }
 
 .container {                    /* 전체 화면의 크기 마진 그리고 글자정렬 */
@@ -8,11 +12,77 @@ body {
     text-align: center;
 }
 
+.innerbar {
+    background: linear-gradient(gray, LightGray);
+    height:100%;
+    width:30%;
+    position:fixed;
+    z-index:1;
+    top:0;
+    left:0;
+    margin-block: 8px;
+    padding:8px 12px;
+}
 
-.main div button {              /* 버튼의 모양 */
-    background-color: rgb(192, 114, 114);
-    width:150px;
-    height:80px;
-    border-radius: 10px;
-    margin:10px;
+#btn50 {
+    background:url("images/innerbtn5.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+#btn40 {
+    background:url("images/innerbtn4.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+#btn30 {
+    background:url("images/innerbtn3.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+#btn20 {
+    background:url("images/innerbtn2.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+#btn10 {
+    background:url("images/innerbtn1.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+.btnup {
+    background:url("images/upbtn.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
+}
+
+.btndown {
+    background:url("images/downbtn.png") no-repeat;
+    background-size: 100px;
+    border:none;
+    width:100px;
+    height:100px;
+    cursor:pointer;
 }

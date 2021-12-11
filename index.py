@@ -151,12 +151,21 @@ def btn_interrupt():
     for bl in btn_list:
         if bl.floor == floor and bl.move == move:
             bl.pushed = not bl.pushed
+            # 버튼을 꺼ㅇ르 때 남아 있는 버튼이 있는지 검사 
+            if(bl.pushed==False and not e.seek_lower_stop() and not e.seek_upper_stop()) :
+                e.move=STOP
             return str(bl.pushed)
 
 
 @app.route("/send_status")
 def send_status():
-    return str(e.floor_state)+str(e.move)
+    global btn_list
+    value=str(e.floor_state)+str(e.move)
+    
+    # for bl in btn_list:
+    #     if bl.pushed==True :
+    #         value=value+str(bl.floor)+str(bl.move)
+    return value
 
 def go():
     while(True) :
