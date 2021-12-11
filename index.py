@@ -26,20 +26,6 @@ class button:
         self.move = move
         self.pushed = pushed
 
-btn_list = [button(1, STOP, False),
-            button(1, UP, False),
-            button(2, STOP, False),
-            button(2, UP, False),
-            button(2, DOWN, False),
-            button(3, STOP, False),
-            button(3, UP, False),
-            button(3, DOWN, False),
-            button(4, STOP, False),
-            button(4, UP, False),
-            button(4, DOWN, False),
-            button(5, STOP, False),
-            button(5, DOWN, False), ]
-
 class elevator:
     def __init__(self, floor_state, move):
         self.floor_state = floor_state
@@ -77,14 +63,17 @@ class elevator:
                 if(bl.move==STOP) :     # 엘리베이터 안에서 누른 버튼일 경우
                     bl.pushed=False         # 버튼 꺼짐
                     is_open=True            # 문열림
+                    arrived_btn.append(button(bl.floor, bl.move, False))
                 if(bl.move==UP) :       # 위로 가는 버튼일 경우      # 아래로 가는 버튼일 경우
                     if(self.move!=DOWN) :     # 아래로 가고 있었다면 버튼 끄고 문열림
                         bl.pushed=False
                         is_open=True
+                        arrived_btn.append(button(bl.floor, bl.move, False))
                 if(bl.move==DOWN) :       # 아래로 가는 버튼일 경우
                     if(self.move!=UP) :     # 아래로 가고 있었다면 버튼 끄고 문열림
                         bl.pushed=False
                         is_open=True
+                        arrived_btn.append(button(bl.floor, bl.move, False))
 
                 # 다음에 갈 방향 결정
                 if(self.move==UP) :  
@@ -92,6 +81,7 @@ class elevator:
                     if(not is_up) :
                         bl.pushed=False
                         is_open=True
+                        arrived_btn.append(button(bl.floor, bl.move, False))
                         is_down = self.seek_lower_stop()
                         if(is_down) : self.move=DOWN
                         else : self.move=STOP      # 아래로 가는 버튼일 경우
@@ -101,6 +91,7 @@ class elevator:
                     if(not is_down) :                
                         bl.pushed=False
                         is_open=True
+                        arrived_btn.append(button(bl.floor, bl.move, False))
                         is_up = self.seek_upper_stop()
                         if(is_up) : 
                             self.move=UP
@@ -112,12 +103,12 @@ class elevator:
             sensors.open_door()
             sensors.close_door()
 
-e = elevator(1, STOP)
-
-
+btn_list=[button(0,0,False)]
+e = elevator(0,0)
+arrived_btn = [button(0,0,False)]
 
 def system_reset():
-    global btn_list, e
+    global btn_list, e, arrived_btn
     btn_list = [button(1, STOP, False),
                 button(1, UP, False),
                 button(2, STOP, False),
@@ -131,8 +122,10 @@ def system_reset():
                 button(4, DOWN, False),
                 button(5, STOP, False),
                 button(5, DOWN, False), ]
-    e = elevator(1, STOP, 0)
+    e = elevator(1, STOP)
+    arrived_btn = []
 
+system_reset()
 
 @app.route("/")
 def home():
@@ -151,7 +144,7 @@ def btn_interrupt():
     for bl in btn_list:
         if bl.floor == floor and bl.move == move:
             bl.pushed = not bl.pushed
-            # 버튼을 꺼ㅇ르 때 남아 있는 버튼이 있는지 검사 
+            # 버튼을 껐을 때 남아 있는 버튼이 있는지 검사 
             if(bl.pushed==False and not e.seek_lower_stop() and not e.seek_upper_stop()) :
                 e.move=STOP
             return str(bl.pushed)
@@ -159,12 +152,11 @@ def btn_interrupt():
 
 @app.route("/send_status")
 def send_status():
-    global btn_list
+    global btn_list, arrived_btn
     value=str(e.floor_state)+str(e.move)
     
-    # for bl in btn_list:
-    #     if bl.pushed==True :
-    #         value=value+str(bl.floor)+str(bl.move)
+    for ab in arrived_btn :
+        value = value + str(ab.floor) + str(ab.move)
     return value
 
 def go():

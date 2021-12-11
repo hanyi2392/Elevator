@@ -132,45 +132,17 @@
             .then(data=> {
                 console.log(data);
                 c_floor=data[0];
-                c_move=data[1];
-                /*
-                var k=2;
-                document.getElementById('result').innerHTML =data.length
-                for (var i=1;i<=5;i++) {
-                    try {
-                        if(k<data.length) {
-                            if(int(data[k+1])==0) {
-                                if(int(data[k])==i) {
-                                    document.getElementById('result').innerHTML ="btn" + data[i] + data[i+1];
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/innerbtn"+i+"p.png') no-repeat";
-                                    k+=2;
-                                }
-                                else {
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/innerbtn"+i+".png') no-repeat";
-                                }
-                            }
-                            else if(int(data[k+1])==1) {
-                                if(int(data[k])==i) {
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/upbtnp.png') no-repeat";
-                                    k+=2;
-                                }
-                                else {
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/upbtn.png') no-repeat";
-                                }
-                            } else {
-                                if(int(data[k])==i) {
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/downbtnp.png') no-repeat";
-                                    k+=2;
-                                }
-                                else {
-                                    document.getElementById("btn" + data[i] + data[i+1]).style.backgroundImage = "url('images/downbtn.png') no-repeat";
-                                }
-                            }
-                        }
-                    } catch (e) {
-                        continue;
+                c_move=data[1];               
+                for(var i=2;i<data.length;i+=2) {
+                    const btnElv = document.getElementById('btn' + data[i] + data[i+1]); 
+                    if(data[i+1]==1) {                              
+                        btnElv.style.backgroundImage = "url('static/images/upbtn.png')";
+                    }else if(data[i+1]==2){
+                        btnElv.style.backgroundImage = "url('static/images/downbtn.png')";
+                    } else {
+                        btnElv.style.backgroundImage = "url('static/images/innerbtn"+ data[i] +".png')";
                     }
-                }*/
+                }
                 const bbdres = document.getElementById('bb_dir');
                 const bbfres = document.getElementById('bb_floor');
                 //bbdres.innerHTML = "현재 층수 : " + c_floor + ", 현재 방향 ; "+ c_move;
