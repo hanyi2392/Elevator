@@ -70,32 +70,32 @@
                     </div>
                 </div>
             </div>
-            <div id="result">
-            </div>
         </div>
     </div>
+
+
+
     <script>
-        var c_floor, c_move, isopen
+        const STOP=0, UP=1, DOWN=2;
+        
         function btn_interrupt(floor, move){
             fetch("/btn?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
             .then(response=> response.text())
             .then(data=> {
                 console.log(data);
-                let result = document.querySelector("#result");  
                 const btnElv = document.getElementById('btn' + floor + move); 
-                //result.innerHTML = "<h1>반환 : " + data+"</h1>";  
                 if(data=="True"){ 
-                    if(move==1) {                              
+                    if(move==UP) {                              
                         btnElv.style.backgroundImage = "url('static/images/upbtnp.png')";
-                    }else if(move==2){
+                    }else if(move==DOWN){
                         btnElv.style.backgroundImage = "url('static/images/downbtnp.png')";
                     } else {
                         btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +"p.png')";
                     }
                 }else{
-                    if(move==1) {                              
+                    if(move==UP) {                              
                         btnElv.style.backgroundImage = "url('static/images/upbtn.png')";
-                    }else if(move==2){
+                    }else if(move==DOWN){
                         btnElv.style.backgroundImage = "url('static/images/downbtn.png')";
                     } else {
                         btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +".png')";
@@ -130,8 +130,8 @@
             .then(response => response.text())
             .then(data=> {
                 console.log(data);
-                c_floor=data[0];
-                c_move=data[1];               
+                var c_floor=data[0];
+                var c_move=data[1];               
                 for(var i=2;i<data.length;i+=2) {
                     const btnElv = document.getElementById('btn' + data[i] + data[i+1]); 
                     if(data[i+1]==1) {                              
@@ -144,7 +144,6 @@
                 }
                 const bbdres = document.getElementById('bb_dir');
                 const bbfres = document.getElementById('bb_floor');
-                //bbdres.innerHTML = "현재 층수 : " + c_floor + ", 현재 방향 ; "+ c_move;
 
                 if (c_move=="1") {
                     bbdres.innerHTML = "<h1>△</h1>";

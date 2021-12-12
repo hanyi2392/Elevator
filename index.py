@@ -107,8 +107,6 @@ class elevator:
                 hd=0
                 sensors.open_door()
                 time.sleep(5)
-                #while sensors.distance<10 :
-                #    time.sleep(4)
                 if pushed_ob==False : 
                     hd = sensors.close_door()
             is_open=False

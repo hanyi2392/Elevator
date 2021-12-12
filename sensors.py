@@ -29,13 +29,16 @@ cdc = 2.5
 
 def open_door():
         global cdc
-        try :
-                servo = GPIO.PWM(SERVO_PIN,55)
-                servo.start(0)
-        except RuntimeError :
-                time.sleep(1)
-                servo = GPIO.PWM(SERVO_PIN,55)
-                servo.start(0)
+        pwmready=False
+        while(not pwmready) :
+                try :
+                        servo = GPIO.PWM(SERVO_PIN,55)
+                        servo.start(0)
+                        pwmready=True
+                except RuntimeError :
+                        pwmready=False
+                        time.sleep(1)
+                print("=======runtime_error_loop=======")
         print("-----------------------------------------")
         print("문이 열립니다.")
         print("-----------------------------------------")
@@ -47,13 +50,16 @@ def open_door():
 
 def close_door() :
         global cdc
-        try :
-                servo = GPIO.PWM(SERVO_PIN,55)
-                servo.start(0)
-        except RuntimeError:
-                time.sleep(1)
-                servo = GPIO.PWM(SERVO_PIN,55)
-                servo.start(0)
+        pwmready=False
+        while(not pwmready) :
+                try :
+                        servo = GPIO.PWM(SERVO_PIN,55)
+                        servo.start(0)
+                        pwmready=True
+                except RuntimeError :
+                        pwmready=False
+                        time.sleep(1)
+                print("=======runtime_error_loop=======")
         print("-----------------------------------------")
         print("문이 닫힙니다.")
         print("-----------------------------------------")
