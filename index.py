@@ -157,6 +157,7 @@ def send_status():
     
     for ab in arrived_btn :
         value = value + str(ab.floor) + str(ab.move)
+    arrived_btn.clear()
     return value
 
 def go():

@@ -1,5 +1,5 @@
 body {
-    background-color: darkslategray;
+    background-color: #272727;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -12,8 +12,16 @@ body {
     text-align: center;
 }
 
+@font-face {
+    font-family: 'LAB디지털';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .innerbar {
     background: linear-gradient(gray, LightGray);
+    float:right;
     height:100%;
     width:30%;
     position:fixed;
@@ -24,63 +32,110 @@ body {
     padding:8px 12px;
 }
 
+#blackboard {
+    background: #181818;
+    width:88%;
+    height:100px;
+    color:red;
+    font-family: 'LAB디지털';
+    font-size: 2em;
+    margin:8px 12px;
+    align-items: center;
+}
+
+#bb_dir {
+    float:left;
+    width:50%;
+    vertical-align: middle;
+}
+
+#bb_floor {
+    float:right;
+    width:50%;
+    vertical-align: middle;
+}
+
+.middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.white7 {
+    color:white;
+}
+
+#outer_button {
+    margin:30px 0px;
+}
+
+h2 {
+    color:white;
+}
+
+h6 {
+    background:#363636;
+    color:white;
+    padding:10px;
+    margin:5px 25px;
+}
+
+#brand {
+    color:white;
+    font-size: smaller;
+    font-style: italic;
+}
+
+.obpanel {
+    background-image: url("images/panel.png") no-repeat;
+}
+
+#inner_button {
+    list-style:none;
+    padding-left: 0;
+}
+
+#outer_button {
+    float:right;
+    width:65%;
+}
+
 #btn50 {
     background:url("images/innerbtn5.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
 #btn40 {
     background:url("images/innerbtn4.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
 #btn30 {
     background:url("images/innerbtn3.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
 #btn20 {
     background:url("images/innerbtn2.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
 #btn10 {
     background:url("images/innerbtn1.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
-.btnup {
+.up {
     background:url("images/upbtn.png") no-repeat;
     background-size: 100px;
-    border:none;
-    width:100px;
-    height:100px;
-    cursor:pointer;
 }
 
-.btndown {
+.down {
     background:url("images/downbtn.png") no-repeat;
     background-size: 100px;
+}
+
+.btn {
     border:none;
     width:100px;
     height:100px;

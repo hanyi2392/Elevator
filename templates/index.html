@@ -7,66 +7,66 @@
 </head>
 <body>
     <div class="container">
-        <!--<div class="header">
-            <h2>HOME IoT</h2>
-        </div>-->
         <div class="main">
 
             <nav class="innerbar">
                 <div id="current_position">
-                    <h7>현재위치</h7>
-                    <div id="blackboard">
-                        <div id="bb_dir"></div>
-                        <div id="bb_floor"></div>
+                    <h7 class=white7> 현재위치</h7>
+                    <div id="blackboard" class=middle>
+                        <div id="bb_dir" class=middle></div>
+                        <div id="bb_floor" class = middle></div>
                     </div>
                 </div>
                 <ul id="inner_button">
                     <!--<button id="btn_led" onclick="led_on()">LED ON</button>-->                      <!-- Javascript 함수 지정 -->
-                    <li><button id="btn50" onclick="btn_interrupt(5,0)"></button></li>
-                    <li><button id="btn40" onclick="btn_interrupt(4,0)"></button></li>
-                    <li><button id="btn30" onclick="btn_interrupt(3,0)"></button></li>
-                    <li><button id="btn20" onclick="btn_interrupt(2,0)"></button></li>
-                    <li><button id="btn10" onclick="btn_interrupt(1,0)"></button></li>
+                    <li><button id="btn50" class=btn onclick="btn_interrupt(5,0)"></button></li>
+                    <li><button id="btn40" class=btn onclick="btn_interrupt(4,0)"></button></li>
+                    <li><button id="btn30" class=btn onclick="btn_interrupt(3,0)"></button></li>
+                    <li><button id="btn20" class=btn onclick="btn_interrupt(2,0)"></button></li>
+                    <li><button id="btn10" class=btn onclick="btn_interrupt(1,0)"></button></li>
                 </ul>
             </nav>
 
             <div id="outer_button">
+                <div class="header">
+                    <h2>우리 아파트</h2>
+                    <h5 id=brand>smart elevator system</h5>
+                </div>
                 <div>
                     <div><h6>5층</h6></div>
-                    <div>
-                        <button class="btndown" id="btn52" onclick="btn_interrupt(5,2)"></button>
+                    <div class=obpanel>
+                        <button class="btn down" id="btn52" onclick="btn_interrupt(5,2)"></button>
                     </div>
                 </div>
                 <div>
                     <div><h6>4층</h6></div>
-                    <div>
-                        <button class="btnup" id="btn41" onclick="btn_interrupt(4,1)"></button>
-                        <button class="btndown" id="btn42" onclick="btn_interrupt(4,2)"></button>
+                    <div class=obpanel>
+                        <button class="btn up" id="btn41" onclick="btn_interrupt(4,1)"></button>
+                        <button class="btn down" id="btn42" onclick="btn_interrupt(4,2)"></button>
                     </div>
                 </div>
                 <div>
-                    <div><h6>3층</h6></div>
+                    <div class=obpanel><h6>3층</h6></div>
                     <div>
-                        <button class="btnup" id="btn31" onclick="btn_interrupt(3,1)"></button>
-                        <button class="btndown" id="btn32" onclick="btn_interrupt(3,2)"></button>
+                        <button class="btn up" id="btn31" onclick="btn_interrupt(3,1)"></button>
+                        <button class="btn down" id="btn32" onclick="btn_interrupt(3,2)"></button>
                     </div>
                 </div>
                 <div>
                     <div><h6>2층</h6></div>
-                    <div>
-                        <button class="btnup" id="btn21" onclick="btn_interrupt(2,1)"></button>
-                        <button class="btndown" id="btn22" onclick="btn_interrupt(2,2)"></button>
+                    <div class=obpanel>
+                        <button class="btn up" id="btn21" onclick="btn_interrupt(2,1)"></button>
+                        <button class="btn down" id="btn22" onclick="btn_interrupt(2,2)"></button>
                     </div>
                 </div>
                 <div>
                     <div><h6>1층</h6></div>
-                    <div>
-                        <button class="btnup" id="btn11" onclick="btn_interrupt(1,1)"></button>
+                    <div class=obpanel>
+                        <button class="btn up" id="btn11" onclick="btn_interrupt(1,1)"></button>
                     </div>
                 </div>
             </div>
             <div id="result">
-                출력
             </div>
         </div>
     </div>
@@ -99,33 +99,7 @@
                     }
                 });
         }
-/*
-        function printFloorStatus() {
-            fetch("/floorstatus")
-            .then(response => response.text())
-            .then(data=> {
-                console.log(data);
-                let bbfres =document.quarySelector("#bb_floor");
-                bbfres.innerHTML = "<h1>"+data+"</h1>";
-            });
-        }
 
-        function printMoveStatus() {
-            fetch("/movestatus")
-            .then(response => response.text())
-            .then(data=> {
-                console.log(data);
-                let bbdres = document.querySelector("#bb_dir");  
-                if (data=="1") {
-                    bbdres.innerHTML = "<h1>△</h1>";
-                } else if(data=="2") {
-                    bbdres.innerHTML = "<h1>▽</h1>";
-                } else {
-                    bbdres.innerHTML = "<h1></h1>";
-                }
-            });
-        }
-*/
         function printStatus() {
             fetch("/send_status")
             .then(response => response.text())
