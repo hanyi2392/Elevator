@@ -22,12 +22,13 @@ GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
 GPIO.setup(SERVO_PIN, GPIO.OUT)
 
-# PWM 인스턴스 servo 생성, 주파수 55으로 설정 
 buzzer = GPIO.PWM(BUZZER_PIN, 440)
 
 distance=11
+cdc = 2.5
 
 def open_door():
+        global cdc
         try :
                 servo = GPIO.PWM(SERVO_PIN,55)
                 servo.start(0)
@@ -38,11 +39,14 @@ def open_door():
         print("-----------------------------------------")
         print("문이 열립니다.")
         print("-----------------------------------------")
-        servo.ChangeDutyCycle(12.5) # 180도 
-        time.sleep(1)
+        while(cdc<12.5) :
+                cdc = cdc + 0.5
+                servo.ChangeDutyCycle(cdc) # 180도 
+                time.sleep(0.1)
         servo.stop()
 
 def close_door() :
+        global cdc
         try :
                 servo = GPIO.PWM(SERVO_PIN,55)
                 servo.start(0)
@@ -53,9 +57,15 @@ def close_door() :
         print("-----------------------------------------")
         print("문이 닫힙니다.")
         print("-----------------------------------------")
-        servo.ChangeDutyCycle(2.5)  # 0도 
-        time.sleep(1)
+        while(cdc>2.5) :
+                cdc = cdc-0.5
+                servo.ChangeDutyCycle(cdc)  # 0도 
+                time.sleep(0.1)
+                if(distance<10) : 
+                        servo.stop()
+                        return 1
         servo.stop()
+        return 0
 
 def make_sound() :
         buzzer.start(10)
@@ -85,6 +95,6 @@ def person_detect() :
                         
                 check_time = stop - start
                 distance = check_time * 34300 / 2
-                #print("Distance : %.1f cm" % distance)
+                if(distance<10) : print("-------사람 감지됨-------")
                 time.sleep(0.4)	# 0.4초 간격으로 센서 측정 
                        

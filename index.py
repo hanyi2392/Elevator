@@ -101,12 +101,16 @@ class elevator:
                             self.move=STOP
         
         if(is_open) :
+            hd = 1
             sensors.make_sound()
-            sensors.open_door()
-            time.sleep(5)
-            while sensors.distance<10 :
-                time.sleep(4)
-            if pushed_ob==False : sensors.close_door()
+            while(hd) :
+                hd=0
+                sensors.open_door()
+                time.sleep(5)
+                #while sensors.distance<10 :
+                #    time.sleep(4)
+                if pushed_ob==False : 
+                    hd = sensors.close_door()
             is_open=False
 
 btn_list=[button(0,0,False)]
