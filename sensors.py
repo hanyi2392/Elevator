@@ -9,8 +9,6 @@ SERVO_PIN = 18
 BUZZER_PIN = 23
 TRIG = 3
 ECHO = 4
-
-person_detected = False
         
 # 불필요한 warning 제거
 GPIO.setwarnings(False)
@@ -27,24 +25,31 @@ GPIO.setup(SERVO_PIN, GPIO.OUT)
 # PWM 인스턴스 servo 생성, 주파수 55으로 설정 
 buzzer = GPIO.PWM(BUZZER_PIN, 440)
 
-
+distance=11
 
 def open_door():
-        servo = GPIO.PWM(SERVO_PIN,55)
-        servo.start(0)
+        try :
+                servo = GPIO.PWM(SERVO_PIN,55)
+                servo.start(0)
+        except RuntimeError :
+                time.sleep(1)
+                servo = GPIO.PWM(SERVO_PIN,55)
+                servo.start(0)
         print("-----------------------------------------")
         print("문이 열립니다.")
         print("-----------------------------------------")
         servo.ChangeDutyCycle(12.5) # 180도 
-        time.sleep(5)
+        time.sleep(1)
         servo.stop()
 
 def close_door() :
-        servo = GPIO.PWM(SERVO_PIN,55)
-        servo.start(0)
-        global person_detected
-        while(person_detected) :
+        try :
+                servo = GPIO.PWM(SERVO_PIN,55)
+                servo.start(0)
+        except RuntimeError:
                 time.sleep(1)
+                servo = GPIO.PWM(SERVO_PIN,55)
+                servo.start(0)
         print("-----------------------------------------")
         print("문이 닫힙니다.")
         print("-----------------------------------------")
@@ -61,7 +66,7 @@ def make_sound() :
         buzzer.stop()
 
 def person_detect() :
-        global person_detected
+        global distance
         
         #Trig핀의 신호를 0으로 출력 
         GPIO.output(TRIG, False)
@@ -80,14 +85,6 @@ def person_detect() :
                         
                 check_time = stop - start
                 distance = check_time * 34300 / 2
-                if distance<10 :
-                        person_detected = True
-                        
-                        print("-----------------------------------------")
-                        print("사람 감지됨.")
-                        print("-----------------------------------------")
-                else : 
-                        person_detected = False
                 #print("Distance : %.1f cm" % distance)
                 time.sleep(0.4)	# 0.4초 간격으로 센서 측정 
                        

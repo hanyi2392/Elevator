@@ -16,6 +16,8 @@ STOP = 0
 UP = 1
 DOWN = 2
 term = 2
+pushed_ob = False   # 열림버튼이 눌려있을 때 True가 되는 변수
+is_open=False       # 목적층에 도착했을 때 True가 되는 변수
 
 story = 5           # 전체 층수
 btnum = story*3-2   # 전체 버튼수
@@ -50,7 +52,7 @@ class elevator:
         return False
 
     def move_floor(self):
-        global btn_list
+        global btn_list, is_open
         if self.move == UP:
             self.floor_state = self.floor_state + 1
         elif self.move == DOWN:
@@ -101,7 +103,11 @@ class elevator:
         if(is_open) :
             sensors.make_sound()
             sensors.open_door()
-            sensors.close_door()
+            time.sleep(5)
+            while sensors.distance<10 :
+                time.sleep(4)
+            if pushed_ob==False : sensors.close_door()
+            is_open=False
 
 btn_list=[button(0,0,False)]
 e = elevator(0,0)
@@ -124,7 +130,6 @@ def system_reset():
                 button(5, DOWN, False), ]
     e = elevator(1, STOP)
     arrived_btn = []
-
 system_reset()
 
 @app.route("/")
@@ -149,6 +154,27 @@ def btn_interrupt():
                 e.move=STOP
             return str(bl.pushed)
 
+@app.route("/open")
+def open():
+    global pushed_ob, is_open
+    if e.move==STOP or is_open==True : 
+        if pushed_ob :
+            sensors.close_door()
+            pushed_ob=False
+        else :
+            sensors.open_door()
+            pushed_ob=True
+    elif pushed_ob == True :
+        sensors.close_door()
+        pushed_ob=False
+    return str(pushed_ob)
+
+@app.route("/close")
+def close():
+    global pushed_ob
+    sensors.close_door()
+    pushed_ob=False
+    return "False"
 
 @app.route("/send_status")
 def send_status():
@@ -163,7 +189,8 @@ def send_status():
 def go():
     while(True) :
         time.sleep(term)
-        e.move_floor()
+        if(pushed_ob==False) :
+            e.move_floor()
 
 t1 = threading.Thread(target=go)     # Thread t1 생성
 t1.start()

@@ -100,6 +100,16 @@ h6 {
     width:65%;
 }
 
+#btnopen {
+    background:url("images/innerbtnopen.png") no-repeat;
+    background-size: 100px;
+}
+
+#btnclose {
+    background:url("images/innerbtnclose.png") no-repeat;
+    background-size: 100px;
+}
+
 #btn50 {
     background:url("images/innerbtn5.png") no-repeat;
     background-size: 100px;

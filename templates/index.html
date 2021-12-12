@@ -18,6 +18,10 @@
                     </div>
                 </div>
                 <ul id="inner_button">
+                    <li>
+                        <button id="btnopen" class=btn onclick="open_door()"></button>
+                        <button id="btnclose" class=btn onclick="close_door()"></button>
+                    </li>
                     <!--<button id="btn_led" onclick="led_on()">LED ON</button>-->                      <!-- Javascript 함수 지정 -->
                     <li><button id="btn50" class=btn onclick="btn_interrupt(5,0)"></button></li>
                     <li><button id="btn40" class=btn onclick="btn_interrupt(4,0)"></button></li>
@@ -71,33 +75,54 @@
         </div>
     </div>
     <script>
-        var c_floor, c_move
+        var c_floor, c_move, isopen
         function btn_interrupt(floor, move){
-                fetch("/btn?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
-                .then(response=> response.text())
-                .then(data=> {
-                    console.log(data);
-                    let result = document.querySelector("#result");  
-                    const btnElv = document.getElementById('btn' + floor + move); 
-                    //result.innerHTML = "<h1>반환 : " + data+"</h1>";  
-                    if(data=="True"){ 
-                        if(move==1) {                              
-                            btnElv.style.backgroundImage = "url('static/images/upbtnp.png')";
-                        }else if(move==2){
-                            btnElv.style.backgroundImage = "url('static/images/downbtnp.png')";
-                        } else {
-                            btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +"p.png')";
-                        }
-                    }else{
-                        if(move==1) {                              
-                            btnElv.style.backgroundImage = "url('static/images/upbtn.png')";
-                        }else if(move==2){
-                            btnElv.style.backgroundImage = "url('static/images/downbtn.png')";
-                        } else {
-                            btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +".png')";
-                        }
+            fetch("/btn?floor=" + floor + "&move=" + move)                                                    /* 해당 경로 파일을 실행 */
+            .then(response=> response.text())
+            .then(data=> {
+                console.log(data);
+                let result = document.querySelector("#result");  
+                const btnElv = document.getElementById('btn' + floor + move); 
+                //result.innerHTML = "<h1>반환 : " + data+"</h1>";  
+                if(data=="True"){ 
+                    if(move==1) {                              
+                        btnElv.style.backgroundImage = "url('static/images/upbtnp.png')";
+                    }else if(move==2){
+                        btnElv.style.backgroundImage = "url('static/images/downbtnp.png')";
+                    } else {
+                        btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +"p.png')";
                     }
-                });
+                }else{
+                    if(move==1) {                              
+                        btnElv.style.backgroundImage = "url('static/images/upbtn.png')";
+                    }else if(move==2){
+                        btnElv.style.backgroundImage = "url('static/images/downbtn.png')";
+                    } else {
+                        btnElv.style.backgroundImage = "url('static/images/innerbtn"+ floor +".png')";
+                    }
+                }
+            });
+        }
+
+        function open_door() {
+            fetch("/open")
+            .then(response => response.text())
+            .then(data=> {
+                console.log(data);
+                const btnElv = document.getElementById('btnopen'); 
+                if(data=="True") btnElv.style.backgroundImage = "url('static/images/innerbtnopenp.png')";
+                else btnElv.style.backgroundImage = "url('static/images/innerbtnopen.png')";
+            });
+        }
+
+        function close_door() {
+            fetch("/close")
+            .then(response => response.text())
+            .then(data=> {
+                console.log(data);
+                const btnElv = document.getElementById('btnopen'); 
+                btnElv.style.backgroundImage = "url('static/images/innerbtnopen.png')";
+            });
         }
 
         function printStatus() {
